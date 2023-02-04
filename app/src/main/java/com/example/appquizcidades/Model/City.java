@@ -1,15 +1,13 @@
 package com.example.appquizcidades.Model;
 
-import android.graphics.Bitmap;
-
 public class City {
-  Bitmap image;
+  String image;
 
-  public Bitmap getImage() {
+  public String getImage() {
     return image;
   }
 
-  public void setImage(Bitmap image) {
+  public void setImage(String image) {
     this.image = image;
   }
 }

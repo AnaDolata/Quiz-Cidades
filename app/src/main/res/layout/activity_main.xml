@@ -10,8 +10,8 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="26dp"
         android:onClick="sort"
         android:text="Iniciar"
         app:layout_constraintBottom_toTopOf="@+id/imageViewCity"
@@ -21,11 +21,9 @@
 
     <ImageView
         android:id="@+id/imageViewCity"
-        android:layout_width="0dp"
+        android:layout_width="211dp"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="39dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextCity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,14 +32,13 @@
 
     <EditText
         android:id="@+id/editTextCity"
-        android:layout_width="300dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="53dp"
-        android:layout_marginEnd="53dp"
-        android:layout_marginBottom="76dp"
+        android:layout_width="273dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="32dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Digite a cidade"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,12 +48,35 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="174dp"
+        android:layout_marginBottom="65dp"
         android:onClick="check"
         android:text="Confirmar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewOutput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCity" />
+
+    <TextView
+        android:id="@+id/textViewOutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="58dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:onClick="nextQuestion"
+        android:text="Próxima pergunta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOutput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
