@@ -3,11 +3,10 @@ package com.example.appquizcidades;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,29 +14,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appquizcidades.Model.City;
-import com.example.appquizcidades.apiCity.RetrofitConfig;
-
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Random;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
 
-  EditText input;
-  ImageView cityImage;
-  Random r;
-  int num, points;
-  int rodada = 0;
-  TextView output;
-  String[] cidades = {"barcelona", "brasilia", "curitiba", "las vegas", "montreal", "paris",
+  private EditText inputResposta;
+  private ImageView cityImage;
+  private TextView outputMenssagem;
+  private Button buttonIniciar;
+  private Button buttonConfirmar;
+  private Button buttonPergunta;
+  private Random r;
+  private int num, points;
+  private int rodada = 0;
+  private String[] cidades = {"barcelona", "brasilia", "curitiba", "las vegas", "montreal", "paris",
                     "rio de janeiro", "salvador", "sao paulo", "toquio"};
-  String[] cidadesRequest = {"01_barcelona.jpg", "02_brasilia.jpg", "03_curitiba.jpg",
+  private String[] cidadesRequest = {"01_barcelona.jpg", "02_brasilia.jpg", "03_curitiba.jpg",
           "04_lasvegas.jpg", "05_montreal.jpg", "06_paris.jpg",
           "07_riodejaneiro.jpg", "08_salvador.jpg", "09_saopaulo.jpg", "10_toquio.jpg"};
 
@@ -47,66 +40,64 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    input = findViewById(R.id.editTextCity);
     cityImage = findViewById(R.id.imageViewCity);
-    output = findViewById(R.id.textViewOutput);
+    inputResposta = findViewById(R.id.editTextCity);
+    outputMenssagem = findViewById(R.id.textViewOutput);
+    buttonIniciar = findViewById(R.id.buttonIniciar);
+    buttonConfirmar = findViewById(R.id.buttonConfirmar);
+    buttonPergunta = findViewById(R.id.buttonPergunta);
   }
 
-  public void sort(View view){
+  public void sortCity(View view){
     r = new Random();
-    num = r.nextInt(10) + 1;
-    Call<ResponseBody> call = new RetrofitConfig().getCity().getCityImage(cidadesRequest[num]);
-    call.enqueue(new Callback<okhttp3.ResponseBody>() {
-      @Override
-      public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-        cityImage.setImageBitmap(bmp);
-      }
-
-      @Override
-      public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-      }
-    });
-    Button button = findViewById(R.id.button);
-    button.setVisibility(View.INVISIBLE);
+    num = r.nextInt(10);
+    String imageUrl = "http://31.220.51.31/ufpr/cidades/" + cidadesRequest[num];
+    //Picasso.get().load(imageUrl).into(cityImage);
+    new DownloadImageTask(cityImage).execute(imageUrl);
+    buttonIniciar.setVisibility(View.INVISIBLE);
   }
 
-  public void check(View view){
-    if(input.length() == 0){
-      Toast.makeText(this, "Forneça uma cidade", Toast.LENGTH_SHORT).show();
-    }else{
-      if (cidades[num] == (input.getText().toString())) {
-        output.setText("Resposta correta!");
-        points += 25;
-      } else {
-        output.setText("Errou! A resposta é " + cidades[num]);
-        points += 0;
-      }
+  private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    ImageView bmImage;
+
+    public DownloadImageTask(ImageView bmImage) {
+      this.bmImage = bmImage;
     }
 
-    //Intent it = new Intent(this, ResultActivity.class);
-    //Bundle params = new Bundle();
-    //params.putInt("pontos", points);
-    //it.putExtras(params);
-    //startActivity(it);
+    protected Bitmap doInBackground(String... urls) {
+      String urldisplay = urls[0];
+      Bitmap mIcon11 = null;
+      try {
+        InputStream in = new java.net.URL(urldisplay).openStream();
+        mIcon11 = BitmapFactory.decodeStream(in);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return mIcon11;
+    }
+
+    protected void onPostExecute(Bitmap result) {
+      bmImage.setImageBitmap(result);
+    }
+  }
+
+  public void checkAnswer(View view){
+    if(inputResposta.length() == 0){
+      Toast.makeText(this, "Forneça uma cidade", Toast.LENGTH_SHORT).show();
+    }else{
+      if (cidades[num].toString().equalsIgnoreCase(inputResposta.getText().toString())) {
+        outputMenssagem.setText("Resposta correta!");
+        points += 25;
+      } else {
+        outputMenssagem.setText("Errou! A resposta é " + cidades[num]);
+        points += 0;
+      }
+      buttonIniciar.setVisibility(View.INVISIBLE);
+    }
   }
 
   public void nextQuestion(View view){
-    r = new Random();
-    num = r.nextInt(10) + 1;
-    Call<ResponseBody> call = new RetrofitConfig().getCity().getCityImage(cidadesRequest[num]);
-    call.enqueue(new Callback<okhttp3.ResponseBody>() {
-      @Override
-      public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-        cityImage.setImageBitmap(bmp);
-      }
-
-      @Override
-      public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-      }
-    });
+    outputMenssagem.setText("");
+    sortCity(view);
   }
 }

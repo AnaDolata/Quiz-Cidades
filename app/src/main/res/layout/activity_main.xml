@@ -7,12 +7,12 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonIniciar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="26dp"
-        android:onClick="sort"
+        android:onClick="sortCity"
         android:text="Iniciar"
         app:layout_constraintBottom_toTopOf="@+id/imageViewCity"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editTextCity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/buttonIniciar"
         tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
@@ -39,17 +39,17 @@
         android:layout_marginBottom="32dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConfirmar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewCity" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonConfirmar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="65dp"
-        android:onClick="check"
+        android:onClick="checkAnswer"
         android:text="Confirmar"
         app:layout_constraintBottom_toTopOf="@+id/textViewOutput"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,13 +62,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="58dp"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/buttonPergunta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonConfirmar" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonPergunta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
