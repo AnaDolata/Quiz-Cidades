@@ -28,11 +28,12 @@ public class MainActivity extends AppCompatActivity {
   private Random r;
   private int num, points;
   private int rodada = 0;
-  private String[] cidades = {"barcelona", "brasilia", "curitiba", "las vegas", "montreal", "paris",
-                    "rio de janeiro", "salvador", "sao paulo", "toquio"};
-  private String[] cidadesRequest = {"01_barcelona.jpg", "02_brasilia.jpg", "03_curitiba.jpg",
+  private static final String[] cidades = {"Barcelona", "Brasilia", "Curitiba", "Las Vegas", "Montreal", "Paris",
+                    "Rio de Janeiro", "Salvador", "Sao Paulo", "Toquio"};
+  private static final String[] cidadesRequest = {"01_barcelona.jpg", "02_brasilia.jpg", "03_curitiba.jpg",
           "04_lasvegas.jpg", "05_montreal.jpg", "06_paris.jpg",
           "07_riodejaneiro.jpg", "08_salvador.jpg", "09_saopaulo.jpg", "10_toquio.jpg"};
+  private boolean[] jaFoi = {false, false, false, false, false, false, false, false, false, false};
 
   @SuppressLint("MissingInflatedId")
   @Override
@@ -49,12 +50,19 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void sortCity(View view){
-    r = new Random();
-    num = r.nextInt(10);
+    do {
+      r = new Random();
+      num = r.nextInt(10);
+    } while (jaFoi[num]==true);
+    jaFoi[num]=true;
     String imageUrl = "http://31.220.51.31/ufpr/cidades/" + cidadesRequest[num];
     //Picasso.get().load(imageUrl).into(cityImage);
     new DownloadImageTask(cityImage).execute(imageUrl);
     buttonIniciar.setVisibility(View.INVISIBLE);
+    buttonConfirmar.setVisibility(View.VISIBLE);
+    outputMenssagem.setText("Onde estou?");
+    inputResposta.setText("");
+    rodada++;
   }
 
   private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -92,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         outputMenssagem.setText("Errou! A resposta é " + cidades[num]);
         points += 0;
       }
-      buttonIniciar.setVisibility(View.INVISIBLE);
+      buttonConfirmar.setVisibility(View.INVISIBLE);
     }
   }
 
