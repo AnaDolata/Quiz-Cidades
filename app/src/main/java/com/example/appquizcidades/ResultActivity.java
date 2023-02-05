@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class ResultActivity extends AppCompatActivity {
 
-  TextView output;
+  private TextView output;
 
   @SuppressLint("MissingInflatedId")
   @Override
@@ -24,7 +24,8 @@ public class ResultActivity extends AppCompatActivity {
       Bundle params = it.getExtras();
       if(params != null){
         int pontos = params.getInt("pontos");
-        output.setText(String.valueOf(pontos));
+        output.setText("Resultado do Quiz:\n\n" +
+                "Você fez " + String.valueOf(pontos) + " pontos!");
       }
     }
   }

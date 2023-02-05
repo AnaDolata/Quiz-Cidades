@@ -3,6 +3,7 @@ package com.example.appquizcidades;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
   private Button buttonIniciar;
   private Button buttonConfirmar;
   private Button buttonPergunta;
+  private Button buttonResultado;
   private Random r;
   private int num, points;
   private int rodada = 0;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     buttonIniciar = findViewById(R.id.buttonIniciar);
     buttonConfirmar = findViewById(R.id.buttonConfirmar);
     buttonPergunta = findViewById(R.id.buttonPergunta);
+    buttonResultado = findViewById(R.id.buttonResultado);
+    buttonResultado.setVisibility(View.INVISIBLE);
   }
 
   public void sortCity(View view){
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     new DownloadImageTask(cityImage).execute(imageUrl);
     buttonIniciar.setVisibility(View.INVISIBLE);
     buttonConfirmar.setVisibility(View.VISIBLE);
+    buttonPergunta.setVisibility(View.INVISIBLE);
     outputMenssagem.setText("Onde estou?");
     inputResposta.setText("");
     rodada++;
@@ -93,12 +98,20 @@ public class MainActivity extends AppCompatActivity {
     if(inputResposta.length() == 0){
       Toast.makeText(this, "Forneça uma cidade", Toast.LENGTH_SHORT).show();
     }else{
+      buttonPergunta.setVisibility(View.VISIBLE);
       if (cidades[num].toString().equalsIgnoreCase(inputResposta.getText().toString())) {
         outputMenssagem.setText("Resposta correta!");
         points += 25;
       } else {
         outputMenssagem.setText("Errou! A resposta é " + cidades[num]);
-        points += 0;
+      }
+      if(rodada == 4){
+        buttonConfirmar.setVisibility(View.INVISIBLE);
+        buttonPergunta.setVisibility(View.INVISIBLE);
+        buttonResultado.setVisibility(View.VISIBLE);
+        outputMenssagem.append("\n\t\t\t\tFim de jogo!");
+        inputResposta.setText("");
+        inputResposta.setVisibility(View.INVISIBLE);
       }
       buttonConfirmar.setVisibility(View.INVISIBLE);
     }
@@ -107,5 +120,11 @@ public class MainActivity extends AppCompatActivity {
   public void nextQuestion(View view){
     outputMenssagem.setText("");
     sortCity(view);
+  }
+
+  public void gameResult(View view){
+    Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+    intent.putExtra("pontos", points);
+    startActivity(intent);
   }
 }
